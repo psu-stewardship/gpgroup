@@ -1,0 +1,14 @@
+PATH
+  remote: .
+  specs:
+    gpgroup (0.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gpgroup!
