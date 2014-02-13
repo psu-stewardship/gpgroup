@@ -47,8 +47,11 @@ Example directory structure:
 
 Here is how we handled non-interactive key generation: https://gist.github.com/woods/8970150 
 
-Open issues:
+## Usage
 
-- What do we call the command?
-- How do we package this? As a ruby gem?
-
+    gpgroup init               # Creates the initial .gpg-known-keys and .gpg-recipients
+    gpgroup import [filename]  # Import the public gpg keys under .gpg-known-keys
+    gpgroup edit <filename>    # Decrypt (or create) the given file and open it in the default editor
+    gpgroup encrypt [path]     # Encrypt or re-encrypt the given filename or path according to recipients
+    gpgroup decrypt <filename> # Print decrypted version of file to standard output
+    gpgroup status <filename>  # Print out the current status and recipients of the given filename
