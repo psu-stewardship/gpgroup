@@ -8,5 +8,5 @@ Gem::Specification.new do |s|
   s.email       = ["jrp22@psu.edu","team@westarete.com"]
   s.files       = ["lib/gpgroup.rb"]
   s.homepage    = 'https://github.com/psu-stewardship/gpgroup'
-  s.license       = 'MIT'
+  s.license     = 'Apache 2.0'
 end
