@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "bin/gpgroup" do
+describe "The bin/gpgroup executable" do
   let(:output) { `bin/gpgroup` }
 
   it "returns successfully" do
