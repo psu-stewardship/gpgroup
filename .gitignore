@@ -1,0 +1,13 @@
+# Don't check in the Gemfile.lock
+# Ref: http://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-and-gemfile/
+/Gemfile.lock
+
+# Bundler config files
+/.bundle
+
+# Gems that have been built
+*.gem
+
+# RubyMine configuration directory
+/.idea
+
