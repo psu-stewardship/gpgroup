@@ -9,4 +9,6 @@ Gem::Specification.new do |s|
   s.files       = ["lib/gpgroup.rb"]
   s.homepage    = 'https://github.com/psu-stewardship/gpgroup'
   s.license     = 'Apache 2.0'
+  s.add_runtime_dependency 'thor', '~> 0.18'
+  s.add_development_dependency 'rspec', '~> 2.14'
 end
