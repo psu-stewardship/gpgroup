@@ -35,6 +35,12 @@ describe GPGroup do
         repo_dir.join(".gpg-known-keys").should be_directory
       end
 
+      it "creates a README that explains how to use the .gpg-known-keys directory" do
+        readme_file = repo_dir.join(".gpg-known-keys/README")
+        readme_file.should exist
+        readme_file.readlines.grep(/how to use/).should_not be_empty
+      end
+
     end
   end
 end
