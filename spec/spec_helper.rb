@@ -1,3 +1,6 @@
+# Define the root path of the project
+$root = Pathname.new(File.expand_path(File.dirname(__FILE__) + '/..'))
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 end
