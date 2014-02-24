@@ -13,7 +13,7 @@ Justin Patterson and Scott Woods brainstormed this operation in the hopes of fin
 - We should be able to quickly import the public keys of recipients. Still don’t know exactly where to store those.
 - Encrypted files should be stored ascii armored, for ease of git management, reading, and distribution. They should still get a .gpg extension though.
 - Chef will need a little library method like `Chef::GPG.decrypt` that knows how to decrypt a secret using the machine’s key and return that secret's contents. It should raise an exception if the decryption fails. This library method probably isn’t part of the gpg utility package.
-- I’m guessing we want to use gpg1, not gpg2. See this confusing discussion: http://ubuntuforums.org/showthread.php?t=1001120
+- We're only going to be supporting gpg1 for now, not gpg2. The syntax of commands is different, and there's not a clear benefit to supporting gpg2. See this confusing discussion: http://ubuntuforums.org/showthread.php?t=1001120
 
 Example directory structure:
 
