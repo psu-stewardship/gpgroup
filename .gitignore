@@ -11,3 +11,5 @@
 # RubyMine configuration directory
 /.idea
 
+# Temporary files
+/tmp
