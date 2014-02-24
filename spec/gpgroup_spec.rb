@@ -31,8 +31,8 @@ describe GPGroup do
         gpgroup.init
       end
 
-      it "creates the .gpg-known-keys file" do
-        repo_dir.join(".gpg-known-keys").should exist
+      it "creates the .gpg-known-keys directory" do
+        repo_dir.join(".gpg-known-keys").should be_directory
       end
 
     end

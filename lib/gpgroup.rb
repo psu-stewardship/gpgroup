@@ -5,7 +5,7 @@ class GPGroup < Thor
 
   desc "init", "Creates the initial .gpg-known-keys and .gpg-recipients"
   def init
-    create_file ".gpg-known-keys"
+    empty_directory ".gpg-known-keys"
   end
 
 end
