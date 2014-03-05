@@ -13,3 +13,7 @@
 
 # Temporary files
 /tmp
+
+# Backup files
+*~
+
