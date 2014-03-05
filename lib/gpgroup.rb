@@ -1,4 +1,5 @@
 require 'thor'
+require 'gpgme'
 
 class GPGroup < Thor
   include Thor::Actions
@@ -11,6 +12,20 @@ class GPGroup < Thor
     empty_directory ".gpg-known-keys"
     copy_file "gpg-known-keys/README", ".gpg-known-keys/README"
     copy_file "gpg-recipients", ".gpg-recipients"
+  end
+
+  desc "import", "Imports the public gpg keys under .gpg-known-keys"
+  def import
+    Dir.entries(".gpg-known-keys").each do |filename|
+      if filename =~ /\.gpg$/
+        say_status "import", filename
+        GPGME::Key.import(File.open(".gpg-known-keys/#{filename}"))
+      else
+        unless filename == '.' || filename == '..' || filename == 'README'
+          say_status "skipped", "#{filename} (doesn't end with .gpg)", :red
+        end
+      end
+    end
   end
 
 end
