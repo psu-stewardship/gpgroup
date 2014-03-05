@@ -1,0 +1,8 @@
+# This file contains the list of gpg identities who are allowed to decrypt
+# the files under this directory. List gpg identities (email addresses or
+# IDs) below, one per line. You must list at least one recipient. The
+# public keys for these users must be stored under the .gpg-known-keys/
+# at the project's root.
+
+# alice@example.com
+# bob@example.com
