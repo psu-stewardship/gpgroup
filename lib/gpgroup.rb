@@ -10,6 +10,7 @@ class GPGroup < Thor
   def init
     empty_directory ".gpg-known-keys"
     copy_file "gpg-known-keys/README", ".gpg-known-keys/README"
+    copy_file "gpg-recipients", ".gpg-recipients"
   end
 
 end

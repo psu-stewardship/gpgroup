@@ -35,10 +35,16 @@ describe GPGroup do
         repo_dir.join(".gpg-known-keys").should be_directory
       end
 
+      let(:readme_file) { repo_dir.join(".gpg-known-keys/README") }
       it "creates a README that explains how to use the .gpg-known-keys directory" do
-        readme_file = repo_dir.join(".gpg-known-keys/README")
         readme_file.should exist
-        readme_file.readlines.grep(/how to use/).should_not be_empty
+        readme_file.read.should =~ /how to use/
+      end
+
+      let(:recipients_file) { repo_dir.join(".gpg-recipients") }
+      it "installs a sample .gpg-recipients file" do
+        recipients_file.should exist
+        recipients_file.read.should =~ /This file contains/
       end
 
     end
