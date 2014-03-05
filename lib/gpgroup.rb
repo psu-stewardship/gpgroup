@@ -13,4 +13,9 @@ class GPGroup < Thor
     copy_file "gpg-recipients", ".gpg-recipients"
   end
 
+  desc "import", "Imports the public gpg keys under .gpg-known-keys"
+  def import
+
+  end
+
 end
