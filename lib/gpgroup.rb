@@ -1,4 +1,5 @@
 require 'thor'
+require 'gpgme'
 
 class GPGroup < Thor
   include Thor::Actions

@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.license     = 'Apache 2.0'
 
   s.add_runtime_dependency 'thor', '~> 0.18'
+  s.add_runtime_dependency 'gpgme', '~> 2.0.0'
   s.add_development_dependency 'rspec', '~> 2.14'
 
   s.files       = Dir.glob("{bin,lib}/**/*") + %w(LICENSE README.md)
