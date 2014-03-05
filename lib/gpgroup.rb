@@ -18,11 +18,11 @@ class GPGroup < Thor
   def import
     Dir.entries(".gpg-known-keys").each do |filename|
       if filename =~ /\.gpg$/
-        say "Importing #{filename}"
+        say_status "import", filename
         GPGME::Key.import(File.open(".gpg-known-keys/#{filename}"))
       else
         unless filename == '.' || filename == '..' || filename == 'README'
-          say "Warning: skipping unrecognized file .gpg-known-keys/#{filename}", Thor::Shell::Color::RED
+          say_status "skipped", "#{filename} (doesn't end with .gpg)", :red
         end
       end
     end

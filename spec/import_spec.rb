@@ -73,7 +73,7 @@ describe GPGroup do
             FileUtils.touch(repo_dir.join(".gpg-known-keys/no-extension"))
           end
           it "prints a warning" do
-            gpgroup.shell.should_receive(:say).with("Warning: skipping unrecognized file .gpg-known-keys/no-extension", Thor::Shell::Color::RED)
+            gpgroup.shell.should_receive(:say_status).with("skipped", "no-extension (doesn't end with .gpg)", :red)
             gpgroup.import
           end
         end
