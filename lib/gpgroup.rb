@@ -16,7 +16,16 @@ class GPGroup < Thor
 
   desc "import", "Imports the public gpg keys under .gpg-known-keys"
   def import
-
+    Dir.entries(".gpg-known-keys").each do |filename|
+      if filename =~ /\.gpg$/
+        say "Importing #{filename}"
+        GPGME::Key.import(File.open(".gpg-known-keys/#{filename}"))
+      else
+        unless filename == '.' || filename == '..' || filename == 'README'
+          say "Warning: skipping unrecognized file .gpg-known-keys/#{filename}", Thor::Shell::Color::RED
+        end
+      end
+    end
   end
 
 end
