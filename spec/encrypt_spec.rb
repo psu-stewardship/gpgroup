@@ -28,27 +28,29 @@ describe GPGroup do
         gpgroup.init
       end
 
-      context "and with a .gpg-recipients that includes our email address" do
-        let(:recipients_file) { repo_dir.join(".gpg-recipients") }
+      context "with a secret file inside it" do
+        let(:secret_file) { repo_dir.join("secret.txt") }
+        let(:encrypted_secret_file) { repo_dir.join("secret.txt.gpg") }
+        let(:secret_message) { "This is the secret message." }
+        let(:gpg) { GPGME::Crypto.new }
         before do
-          File.open(recipients_file, 'a') do |f|
-            f.puts "test@example.com"
+          File.open(secret_file, 'w') do |f|
+            f.write secret_message
           end
         end
 
-        context "and with a secret file inside it" do
-          let(:secret_file) { repo_dir.join("secret.txt") }
-          let(:encrypted_secret_file) { repo_dir.join("secret.txt.gpg") }
-          let(:secret_message) { "This is the secret message." }
-          let(:gpg) { GPGME::Crypto.new }
+        context "and when the recipient is alice" do
+          let(:recipients_file) { repo_dir.join(".gpg-recipients") }
           before do
-            File.open(secret_file, 'w') do |f|
-              f.write secret_message
+            File.open(recipients_file, 'a') do |f|
+              f.puts "alice@example.com"
             end
           end
 
-          context "when we run the encrypt command" do
+          context "when bob runs the encrypt command" do
+            let(:decrypted_message) { gpg.decrypt(File.open(encrypted_secret_file), password: 'secret').to_s }
             before do
+              GPGME::Engine.home_dir = $root.join("spec/fixtures/bob").to_s
               gpgroup.encrypt("secret.txt")
             end
 
@@ -58,16 +60,24 @@ describe GPGroup do
               encrypted_secret_file.read.should_not =~ /secret message/
             end
 
-            it "encrypts the file for that recipient" do
-              gpg.decrypt(File.open(encrypted_secret_file), password: 'secret').to_s.should == secret_message
-            end
-
             it "removes the original secret file" do
               secret_file.should_not exist
             end
 
+            specify "alice can decrypt the file" do
+              GPGME::Engine.home_dir = $root.join("spec/fixtures/alice").to_s
+              decrypted_message.should == secret_message
+            end
+
+            specify "bob can not decrypt the file" do
+              GPGME::Engine.home_dir = $root.join("spec/fixtures/bob").to_s
+              expect { decrypted_message }.to raise_error(GPGME::Error::DecryptFailed)
+            end
+
           end
+
         end
+
       end
     end
   end

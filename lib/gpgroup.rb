@@ -37,9 +37,11 @@ class GPGroup < Thor
     FileUtils.rm_f(path)
   end
 
+  private
+
   def recipients
     # TODO: read this from the .gpg-recipients files
-    ["test@example.com"]
+    ["alice@example.com"]
   end
 
 end
