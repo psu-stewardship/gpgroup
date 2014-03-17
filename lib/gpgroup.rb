@@ -29,8 +29,17 @@ class GPGroup < Thor
   end
 
   desc "encrypt", "Encrypt or re-encrypt the given filename or path according to recipients"
-  def encrypt
+  def encrypt(path)
+    crypto = GPGME::Crypto.new
+    input_file = File.open(path, 'r')
+    output_file = File.open("#{path}.gpg", 'w')
+    crypto.encrypt input_file, output: output_file, recipients: recipients, armor: true
+    FileUtils.rm_f(path)
+  end
 
+  def recipients
+    # TODO: read this from the .gpg-recipients files
+    ["test@example.com"]
   end
 
 end
