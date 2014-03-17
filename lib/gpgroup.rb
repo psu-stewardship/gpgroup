@@ -28,4 +28,9 @@ class GPGroup < Thor
     end
   end
 
+  desc "encrypt", "Encrypt or re-encrypt the given filename or path according to recipients"
+  def encrypt
+
+  end
+
 end
