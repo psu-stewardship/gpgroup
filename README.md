@@ -1,6 +1,8 @@
 gpgroup
 =======
 
+<a href="https://codeclimate.com/github/psu-stewardship/gpgroup"><img src="https://codeclimate.com/github/psu-stewardship/gpgroup.png" /></a>
+
 gpg and group permissions
 
 Justin Patterson and Scott Woods brainstormed this operation in the hopes of finding a more secure,
