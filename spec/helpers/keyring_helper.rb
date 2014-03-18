@@ -20,6 +20,10 @@ module KeyringHelper
     GPGME::Engine.home_dir = nil
   end
 
+  def decrypt_file(filename)
+    GPGME::Crypto.new.decrypt(File.open(filename), password: 'secret').to_s
+  end
+
   def use_keyring(username)
     GPGME::Engine.home_dir = keyring_path.join(username.to_s).to_s
   end

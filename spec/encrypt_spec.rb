@@ -19,63 +19,47 @@ describe GPGroup do
       command.description.should_not be_empty
     end
 
-    context "when run inside an existing repository" do
-
-      context "with a secret file inside it" do
-        let(:secret_file) { repo_dir.join("secret.txt") }
-        let(:encrypted_secret_file) { repo_dir.join("secret.txt.gpg") }
-        let(:secret_message) { "This is the secret message." }
-        let(:gpg) { GPGME::Crypto.new }
-        before do
-          File.open(secret_file, 'w') do |f|
-            f.write secret_message
-          end
-        end
-
-        context "and when the recipient is alice" do
-          let(:recipients_file) { repo_dir.join(".gpg-recipients") }
-          before do
-            File.open(recipients_file, 'a') do |f|
-              f.puts "alice@example.com"
-            end
-          end
-
-          context "when bob runs the encrypt command" do
-            let(:decrypted_message) { gpg.decrypt(File.open(encrypted_secret_file), password: 'secret').to_s }
-
-            before do
-              as_bob do
-                gpgroup.encrypt("secret.txt")
-              end
-            end
-
-            it "creates an encrypted version of the file" do
-              encrypted_secret_file.should exist
-              encrypted_secret_file.read.should =~ /BEGIN PGP MESSAGE/
-              encrypted_secret_file.read.should_not =~ /secret message/
-            end
-
-            it "removes the original secret file" do
-              secret_file.should_not exist
-            end
-
-            specify "alice can decrypt the file" do
-              as_alice do
-                decrypted_message.should == secret_message
-              end
-            end
-
-            specify "bob can not decrypt the file" do
-              as_bob do
-                expect { decrypted_message }.to raise_error(GPGME::Error::DecryptFailed)
-              end
-            end
-
-          end
-
-        end
-
+    context "when alice is the sole recipient" do
+      before do
+        File.write(".gpg-recipients", "alice@example.com")
       end
+
+      context "and when bob encrypts a file" do
+        let(:secret_file) { repo_dir.join("secret.txt") }
+        let(:secret_message) { "This is the secret message." }
+        before do
+          as_bob do
+            File.write(secret_file, secret_message)
+            gpgroup.encrypt(secret_file)
+          end
+        end
+
+        it "removes the original secret file" do
+          secret_file.should_not exist
+        end
+
+        let(:encrypted_secret_file) { repo_dir.join("secret.txt.gpg") }
+        it "creates an encrypted version of the file" do
+          encrypted_secret_file.should exist
+          encrypted_secret_file.read.should =~ /BEGIN PGP MESSAGE/
+          encrypted_secret_file.read.should_not =~ /secret message/
+        end
+
+        specify "alice can decrypt the file" do
+          as_alice do
+            decrypt_file(encrypted_secret_file).should == secret_message
+          end
+        end
+
+        specify "bob can not decrypt the file" do
+          as_bob do
+            expect {
+              decrypt_file(encrypted_secret_file)
+            }.to raise_error(GPGME::Error::DecryptFailed)
+          end
+        end
+      end
+
     end
   end
 end
