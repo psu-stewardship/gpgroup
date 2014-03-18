@@ -13,6 +13,8 @@ RSpec.configure do |config|
   end
 
   # Include our own custom helpers
+  require "helpers/keyring_helper"
   require "helpers/repository_helper"
+  config.include KeyringHelper
   config.include RepositoryHelper
 end

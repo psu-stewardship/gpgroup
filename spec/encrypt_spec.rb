@@ -43,9 +43,11 @@ describe GPGroup do
 
           context "when bob runs the encrypt command" do
             let(:decrypted_message) { gpg.decrypt(File.open(encrypted_secret_file), password: 'secret').to_s }
+
             before do
-              GPGME::Engine.home_dir = $root.join("spec/fixtures/bob").to_s
-              gpgroup.encrypt("secret.txt")
+              as_bob do
+                gpgroup.encrypt("secret.txt")
+              end
             end
 
             it "creates an encrypted version of the file" do
@@ -59,13 +61,15 @@ describe GPGroup do
             end
 
             specify "alice can decrypt the file" do
-              GPGME::Engine.home_dir = $root.join("spec/fixtures/alice").to_s
-              decrypted_message.should == secret_message
+              as_alice do
+                decrypted_message.should == secret_message
+              end
             end
 
             specify "bob can not decrypt the file" do
-              GPGME::Engine.home_dir = $root.join("spec/fixtures/bob").to_s
-              expect { decrypted_message }.to raise_error(GPGME::Error::DecryptFailed)
+              as_bob do
+                expect { decrypted_message }.to raise_error(GPGME::Error::DecryptFailed)
+              end
             end
 
           end
