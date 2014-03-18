@@ -26,39 +26,26 @@ describe GPGroup do
 
         context "when there are no public keys" do
           it "does nothing" do
-            before = GPGME::Key.find(:public).map(&:email)
-            gpgroup.import
-            after = GPGME::Key.find(:public).map(&:email)
-            before.should == after
+            expect { gpgroup.import }.not_to change { known_emails }
           end
         end
 
-        context "when there are new public keys" do
+        context "when there is a known key" do
           before do
             FileUtils.cp(fixtures_path.join("jrp22@psu.edu.gpg"), repo_dir.join(".gpg-known-keys/"))
           end
-          it "imports them" do
-            before = GPGME::Key.find(:public).map(&:email)
-            before.should_not include('jrp22@psu.edu')
-            gpgroup.import
-            after = GPGME::Key.find(:public).map(&:email)
-            after.should include('jrp22@psu.edu')
-            new_emails = after - before
-            new_emails.should == %w{ jrp22@psu.edu }
+          context "that we haven't imported" do
+            it "imports it" do
+              expect { gpgroup.import }.to change { known_emails }.by(['jrp22@psu.edu'])
+            end
           end
-        end
-
-        context "when there are public keys that we've already imported" do
-          before do
-            FileUtils.cp(fixtures_path.join("jrp22@psu.edu.gpg"), repo_dir.join(".gpg-known-keys/"))
-            gpgroup.import # import this key once
-            GPGME::Key.find(:public).map(&:email).should include('jrp22@psu.edu')
-          end
-          it "does nothing" do
-            before = GPGME::Key.find(:public).map(&:email)
-            gpgroup.import # now try to import it again
-            after = GPGME::Key.find(:public).map(&:email)
-            before.should == after
+          context "that we have already imported" do
+            before do
+              gpgroup.import
+            end
+            it "does nothing when imported a second time" do
+              expect { gpgroup.import }.not_to change { known_emails }
+            end
           end
         end
 

@@ -38,5 +38,8 @@ module KeyringHelper
     $root.join("tmp/keyrings")
   end
 
+  def known_emails
+    GPGME::Key.find(:public).map(&:email)
+  end
 
 end
