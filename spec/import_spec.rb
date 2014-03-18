@@ -20,7 +20,6 @@ describe GPGroup do
     end
 
     context "when run inside an existing repository" do
-      let(:fixtures_path) { $root.join("spec/fixtures") }
 
       context "in the .gpg-known-keys directory" do
 

@@ -27,11 +27,15 @@ module KeyringHelper
   def reset_keyrings
     FileUtils.rm_rf(keyring_path)
     FileUtils.mkpath(keyring_path)
-    FileUtils.cp_r($root.join("spec/fixtures/alice"), keyring_path.join("alice"))
-    FileUtils.cp_r($root.join("spec/fixtures/bob"), keyring_path.join("bob"))
+    FileUtils.cp_r(fixtures_path.join("alice"), keyring_path.join("alice"))
+    FileUtils.cp_r(fixtures_path.join("bob"), keyring_path.join("bob"))
 
     # Use Bob's keyring by default
     use_keyring :bob
+  end
+
+  def fixtures_path
+    $root.join("spec/fixtures")
   end
 
   def keyring_path

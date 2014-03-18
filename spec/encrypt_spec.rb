@@ -20,7 +20,6 @@ describe GPGroup do
     end
 
     context "when run inside an existing repository" do
-      let(:fixtures_path) { $root.join("spec/fixtures") }
 
       context "with a secret file inside it" do
         let(:secret_file) { repo_dir.join("secret.txt") }
