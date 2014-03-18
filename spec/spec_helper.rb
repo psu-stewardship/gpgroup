@@ -11,4 +11,8 @@ RSpec.configure do |config|
     require 'gpgme'
     GPGME::Engine.home_dir = $root.join("tmp/gnupg").to_s
   end
+
+  # Include our own custom helpers
+  require "helpers/repository_helper"
+  config.include RepositoryHelper
 end

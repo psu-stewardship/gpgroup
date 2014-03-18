@@ -2,9 +2,11 @@ require 'spec_helper'
 require 'gpgroup'
 
 describe GPGroup do
-  let(:args) { [] }
-  let(:options) {{ quiet: true }}
-  let(:gpgroup) { GPGroup.new(args, options) }
+  let(:gpgroup) { GPGroup.new([], quiet: true) }
+
+  before do
+    initialize_repo_dir
+  end
 
   describe "the import command" do
     let(:command) { GPGroup.commands['import'] }
@@ -18,15 +20,7 @@ describe GPGroup do
     end
 
     context "when run inside an existing repository" do
-      let(:tmp_dir) { $root.join("tmp") }
-      let(:repo_dir) { tmp_dir.join("repo") }
       let(:fixtures_path) { $root.join("spec/fixtures") }
-      before do
-        FileUtils.rm_rf(repo_dir)
-        FileUtils.mkpath(repo_dir)
-        FileUtils.chdir(repo_dir)
-        gpgroup.init
-      end
 
       context "in the .gpg-known-keys directory" do
 
