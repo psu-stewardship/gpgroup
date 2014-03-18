@@ -1,3 +1,5 @@
+require 'gpgme'
+
 module KeyringHelper
 
   def as_alice(&block)
@@ -13,10 +15,28 @@ module KeyringHelper
   end
 
   def as_user(username, &block)
-    old_home_dir = GPGME::Engine.home_dir
-    GPGME::Engine.home_dir = $root.join("spec/fixtures/#{username}").to_s
+    use_keyring username
     yield
-    GPGME::Engine.home_dir = old_home_dir
+    GPGME::Engine.home_dir = nil
   end
+
+  def use_keyring(username)
+    GPGME::Engine.home_dir = keyring_path.join(username.to_s).to_s
+  end
+
+  def reset_keyrings
+    FileUtils.rm_rf(keyring_path)
+    FileUtils.mkpath(keyring_path)
+    FileUtils.cp_r($root.join("spec/fixtures/alice"), keyring_path.join("alice"))
+    FileUtils.cp_r($root.join("spec/fixtures/bob"), keyring_path.join("bob"))
+
+    # Use Bob's keyring by default
+    use_keyring :bob
+  end
+
+  def keyring_path
+    $root.join("tmp/keyrings")
+  end
+
 
 end
